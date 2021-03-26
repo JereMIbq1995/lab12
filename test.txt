@@ -1,0 +1,17 @@
+
+
+Test and expected results:
+
+Admiral Abe: (Secret)
+   Message accessible:
+        [100] Message from Winston Churchill at 16 May 1940
+        [101] Message from President Franklin D. Roosevelt at 29 December 1940
+        [102] Message from Seaman Smith at 5 December 1941
+        [103] Message from Walter the Weatherman at 7 December 1941
+        [104] Message from President Franklin D. Roosevelt at 8 December 1941
+        [105] Message from Lt. Kenneth Taylor at 9 December 1941
+        [106] Message from Fleet Admiral Chester W. Nimitz at 10 December 1941
+        [107] Message from Captain Buckmaster at 7 June 1942
+        [108] Message from General George S. Patton at 1 February 1943
+        [109] Message from J. Robert Oppenheimer at 16 July, 1945
+
