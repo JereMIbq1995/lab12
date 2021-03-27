@@ -22,51 +22,52 @@ using namespace std;
  * MESSAGES :: DISPLAY
  * display the list of messages
  ***********************************************/
-void Messages::display() const
+void Messages::display(const Control &subjectControl) const
 {
    for (list <Message> :: const_iterator it = messages.begin();
         it != messages.end();
         ++it)
-      it->displayProperties();
+      it->displayProperties(subjectControl);
 }
 
 /***********************************************
  * MESSAGES :: SHOW
  * show a single message
  **********************************************/
-void Messages::show(int id) const
+void Messages::show(int id, const Control &subjectControl) const
 {
    for (list <Message> :: const_iterator it = messages.begin();
         it != messages.end();
         ++it)
       if (it->getID() == id)
-         it->displayText();
+         it->displayText(subjectControl);
 }
 
 /***********************************************
  * MESSAGES :: UPDATE
  * update one single message
  ***********************************************/
-void Messages::update(int id, const string & text)
+void Messages::update(int id, const string & text, 
+                     const Control &subjectControl)
 {
    for (list <Message> :: iterator it = messages.begin();
         it != messages.end();
         ++it)
       if (it->getID() == id)
-         it->updateText(text);
+         it->updateText(text, subjectControl);
 }
 
 /***********************************************
  * MESSAGES :: REMOVE
  * remove a single message
  **********************************************/
-void Messages::remove(int id)
+void Messages::remove(int id, const Control &subjectControl)
 {
    for (list <Message> :: iterator it = messages.begin();
         it != messages.end();
         ++it)
       if (it->getID() == id)
-         it->clear();
+         it->clear(subjectControl);
 }
 
 /***********************************************
@@ -75,9 +76,10 @@ void Messages::remove(int id)
  **********************************************/
 void Messages::add(const string & text,
                    const string & author,
-                   const string & date)
+                   const string & date,
+                   const Control &assetControl)
 {
-   Message message(text, author, date);
+   Message message(text, author, date, assetControl);
    messages.push_back(message);
 }
 
@@ -109,13 +111,26 @@ void Messages::readMessages(const char * fileName)
       getline(fin, date, '|');
       getline(fin, text);
 
+      Control numControl = textToNumControl(textControl);
       if (!fin.fail())
       {
-         Message message(text, author, date);
+         Message message(text, author, date, numControl);
          messages.push_back(message);
       }
    }
 
    // close up shop!
    fin.close();
+}
+
+/***********************************************
+ * Convert control of type string into type Control
+ *  If the string is not recognizable, assume
+ *  that it's at the highest level of confidentiality
+ * author: Jeremy Duong
+ * *********************************************/
+Control Messages::textToNumControl(const string &control)
+{
+   ControlMap controlMap;
+   return controlMap.getControlNum(control); //In time of war, it's better safe than sorry
 }

@@ -21,6 +21,7 @@ Message ::  Message()
    empty = true;
    text = "Empty";
    id = idNext++;
+   assetControl = SECRET; //Again, assume it's secret to be safe
 }
 
 
@@ -30,12 +31,14 @@ Message ::  Message()
  **************************************************/
 Message::Message(const string & text,
                  const string & author,
-                 const string & date)
+                 const string & date,
+                 const Control & assetControl)
 {
    this->text = text;
    this->author = author;
    this->date = date;
    this->id = idNext++;
+   this->assetControl = assetControl;
    empty = false;
 }
 
@@ -44,10 +47,10 @@ Message::Message(const string & text,
  * Display the attributes/properties but not the
  * content of this message
  **************************************************/
-void Message::displayProperties() const
+void Message::displayProperties(const Control &subjectControl) const
 {
-   // skip this one if there is nothing to see
-   if (empty)
+   // skip this one if there is nothing to see, or if user has no permission
+   if (empty || !securityConditionRead(this->assetControl, subjectControl))
       return;
    
    // display the message
@@ -60,32 +63,63 @@ void Message::displayProperties() const
  * MESSAGE :: DISPLAY TEXT
  * Display the contents or the text of the message
  **************************************************/
-void Message::displayText() const
+void Message::displayText(const Control &subjectControl) const
 {
-   cout << "\tMessage: "
-        << text
-        << endl;
+   // Display only if user has permission
+   if (securityConditionRead(this->assetControl, subjectControl))
+   {
+      cout << "\tMessage: "
+         << text
+         << endl;
+   }
+   else
+   {
+      cout << "Cannot find message!" << endl;
+   }
 }
 
 /**************************************************
  * MESSAGE :: UPDATE TEXT
  * Update the contents or text of the message
  **************************************************/
-void Message::updateText(const string & newText)
+void Message::updateText(const string & newText, const Control &subjectControl)
 {
-   text = newText;
+   if (securityConditionWrite(this->assetControl, subjectControl))
+   {
+      text = newText;
+      cout << "Update successful!" << endl;
+   }
+   else
+   {
+      cout << "Cannot update this message!" << endl;
+   }
+}
+
+/**************************************************
+ * MESSAGE :: GET CONTROL
+ * Return the control level of the asset
+ *************************************************/
+Control Message::getControl() const {
+   return this->assetControl;
 }
 
 /**************************************************
  * MESSAGE :: CLEAR
  * Delete the contents of a message and mark it as empty
  *************************************************/
-void Message::clear()
+void Message::clear(const Control &subjectControl)
 {
-   text = "Empty";
-   author.clear();
-   date.clear();
-   empty = true;
+   if (securityConditionWrite(this->assetControl, subjectControl))
+   {
+      text = "Empty";
+      author.clear();
+      date.clear();
+      empty = true;
+   }
+   else
+   {
+      cout << "Cannot clear this message!" << endl;
+   }
 }
 
 int Message::idNext = 100;

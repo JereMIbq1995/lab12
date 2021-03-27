@@ -21,6 +21,7 @@ struct User
 {
    const char *name;
    const char *password;
+   Control subjectControl;
 };
 
 /****************************************************
@@ -52,6 +53,7 @@ public:
 private:
    Messages * pMessages;
    std::string userName;
+   Control subjectControl;
 
    // prompt for a line of input
    std::string promptForLine(const char * verb) const;
@@ -60,7 +62,7 @@ private:
    int promptForId(const char * verb) const;
 
    // authenticate the user;
-   void authenticate(const std::string & userName,
+   Control authenticate(const std::string & userName,
                      const std::string & password) const;
 
    // find the ID of a given user

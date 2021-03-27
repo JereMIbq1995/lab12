@@ -23,11 +23,11 @@ using namespace std;
  *************************************************************/
 const User users[] =
 {
-   { "AdmiralAbe",     "password" },  
-   { "CaptainCharlie", "password" }, 
-   { "SeamanSam",      "password" },
-   { "SeamanSue",      "password" },
-   { "SeamanSly",      "password" }
+   { "AdmiralAbe",     "password", SECRET },  
+   { "CaptainCharlie", "password", PRIVILEGED }, 
+   { "SeamanSam",      "password", CONFIDENTIAL },
+   { "SeamanSue",      "password", CONFIDENTIAL },
+   { "SeamanSly",      "password", CONFIDENTIAL }
 };
 
 const int ID_INVALID = -1;
@@ -40,7 +40,7 @@ Interact::Interact(const string & userName,
                    const string & password,
                    Messages & messages)
 {
-   authenticate(userName, password);
+   this->subjectControl = authenticate(userName, password);
    this->userName = userName;
    this->pMessages = &messages;
 }
@@ -51,7 +51,7 @@ Interact::Interact(const string & userName,
  ****************************************************/
 void Interact::show() const
 {
-   pMessages->show(promptForId("display"));
+   pMessages->show(promptForId("display"), this->subjectControl);
 }
    
 /****************************************************
@@ -60,7 +60,7 @@ void Interact::show() const
  ***************************************************/
 void Interact::display() const
 {
-   pMessages->display();
+   pMessages->display(this->subjectControl);
 }
 
 /****************************************************
@@ -71,7 +71,8 @@ void Interact::add()
 {
    pMessages->add(promptForLine("message"),
                   userName,
-                  promptForLine("date"));
+                  promptForLine("date"),
+                  this->subjectControl);
 }
 
 /****************************************************
@@ -82,7 +83,8 @@ void Interact::update()
 {
    int id = promptForId("update");
    pMessages->update(id,
-                     promptForLine("message"));
+                     promptForLine("message"),
+                     this->subjectControl);
 }
 
 /****************************************************
@@ -91,7 +93,7 @@ void Interact::update()
  ***************************************************/
 void Interact::remove()
 {
-   pMessages->remove(promptForId("delete"));
+   pMessages->remove(promptForId("delete"), this->subjectControl);
 }
 
 /****************************************************
@@ -133,13 +135,14 @@ int Interact::promptForId(const char * verb) const
  * INTERACT :: AUTHENTICATION
  * authenticate the user: find their control level
  ****************************************************/
-void Interact::authenticate(const string & userName,
+Control Interact::authenticate(const string & userName,
                             const string & password) const
 {
    int id = idFromUser(userName);
-   bool authenticated = false;
+   Control subjectControl = PUBLIC;
    if (ID_INVALID != id && password == string(users[id].password))
-      authenticated = true;
+      subjectControl = users[id].subjectControl;
+   return subjectControl;
 }
 
 /****************************************************

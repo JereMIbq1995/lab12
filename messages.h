@@ -25,22 +25,24 @@ public:
    Messages(const char * fileName) { readMessages(fileName); }
 
    // display the list of messages
-   void display() const;
+   void display(const Control &subjectControl) const;
 
    // show a single message
-   void show(int id) const;
+   void show(int id, const Control &subjectControl) const;
 
    // update one single message
    void update(int id,
-               const std::string & text);
+               const std::string & text,
+               const Control &subjectControl);
 
    // remove a single message
-   void remove(int id);
+   void remove(int id, const Control &subjectControl);
 
    // add a new message
    void add(const std::string & text,
             const std::string & author,
-            const std::string & date);
+            const std::string & date,
+            const Control &subjectControl);
 
 private:
    // the list of messages
@@ -48,4 +50,7 @@ private:
 
    // read the messages from a file
    void readMessages(const char * fileName);
+
+   // convert Control of type string into Control of type Control
+   Control textToNumControl(const std::string &control);
 };
