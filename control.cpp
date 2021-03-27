@@ -36,8 +36,16 @@ bool securityConditionWrite(const Control &assetControl,
  * Return Control type representation of Control given the string
  * **********************************************************************/
 Control ControlMap::getControlNum(const std::string &controlText) 
-{ 
-    return this->controlMap[controlText];
+{
+    for (auto keyValuePair : this->controlMap)
+    {
+        if (keyValuePair.first == controlText)
+        {
+            return this->controlMap[controlText];
+        }
+    }
+    //If control text is not recognize, assume it's the highest level
+    return this->highestLevel.second;
 }
 
 /************************************************************************
@@ -51,5 +59,6 @@ std::string ControlMap::getControlString(const Control &controlNum)
             return keyValuePair.first;
         }
     }
-    return NULL;
+    //If ControlNum is not recognized in the map, assume it's the highest level
+    return this->highestLevel.first;
 }

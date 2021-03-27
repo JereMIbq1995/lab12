@@ -139,7 +139,10 @@ Control Interact::authenticate(const string & userName,
                             const string & password) const
 {
    int id = idFromUser(userName);
-   Control subjectControl = PUBLIC;
+   ControlMap controlMap;
+
+   //If username and password are not recognized, assume the lowest level
+   Control subjectControl = controlMap.getLowestLevel();
    if (ID_INVALID != id && password == string(users[id].password))
       subjectControl = users[id].subjectControl;
    return subjectControl;

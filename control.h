@@ -21,16 +21,24 @@ enum Control {
  * Map the string representation of control level to the Control representation
  * to make it easy to add control levels
  * To add more control levels, add more insert statements to the constructor
+ * Also remember to insert the value into the enum above.
  * **********************************************************************/
 class ControlMap {
 private:
     std::map<std::string, Control> controlMap;
+    std::pair<std::string, Control> lowestLevel;
+    std::pair<std::string, Control> highestLevel;
 public:
     ControlMap() {
+        //Add more insert statements to this to include more control levels
         controlMap.insert({"Public", PUBLIC});
         controlMap.insert({"Confidential", CONFIDENTIAL});
         controlMap.insert({"Privileged", PRIVILEGED});
         controlMap.insert({"Secret", SECRET});
+
+        //If the highest or lowest level changes, please also change these:
+        this->lowestLevel = {"Public", PUBLIC};
+        this->highestLevel = {"Secret", SECRET};
     };
 
     std::map<Control, std::string> getMap();
@@ -40,6 +48,12 @@ public:
 
     // Return string representation of Control
     std::string getControlString(const Control &controlNum);
+
+    // Get the highest control level
+    Control getHighestLevel() { return this->highestLevel.second; }
+
+    // Get the lowest control level
+    Control getLowestLevel() { return this->lowestLevel.second; }
 };
 
 /************************************************************************
