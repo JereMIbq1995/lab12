@@ -2,7 +2,12 @@
  * COMPONENT:
  *    INTERACT
  * Author:
- *    Br. Helfrich, <your name here if you made a change>
+ *    Jeremy Duong
+ *    Austin Lundberg
+ *    Timothy Stephenson
+ *    Gabriel Sanahuano
+ *    Sophia Pearson
+ *    David Headrick
  * Summary:
  *    This class allows one user to interact with the system
  ************************************************************************/

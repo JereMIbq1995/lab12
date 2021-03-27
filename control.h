@@ -3,6 +3,11 @@
  *    CONTROL
  * Author:
  *    Jeremy Duong
+ *    Austin Lundberg
+ *    Timothy Stephenson
+ *    Gabriel Sanahuano
+ *    Sophia Pearson
+ *    David Headrick
  * Summary:
  *    This class stores the notion of Bell-LaPadula
  ************************************************************************/
