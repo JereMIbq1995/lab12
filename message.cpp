@@ -115,6 +115,7 @@ void Message::clear(const Control &subjectControl)
       author.clear();
       date.clear();
       empty = true;
+      cout << "Message deleted." << endl;
    }
    else
    {
